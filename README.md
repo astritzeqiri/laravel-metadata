@@ -84,3 +84,40 @@ $user->get_meta("meta_key");
 // if the second parameter is true it returns only the value
 $user->get_meta("meta_key", true);
 ```
+
+Delete meta data entry:
+
+```php
+
+// get the instance
+$user = \App\User::first();
+
+// delete a metadata entry with a given key
+$user->delete_meta("meta_key");
+
+// delete all metadatas of a user
+$user->delete_all_metas();
+
+```
+
+
+Filter users by meta_data:
+
+```php
+
+/* the query
+ * 
+ * the filter function is metaQuery($metas = array(), $relation = "AND")
+ *
+ * @param array $values [array of metadatas (Item example ["item" => "", "value" => "", "compare" => ""])]
+ * @param string $relation [how you want to search with AND or OR]
+ *
+ */
+
+// Example 
+$users = \App\User::metaQuery(array(
+	array('key' => 'hair_color', 'value' => 'red'),// filter the users that have red hair color
+	array('key' => 'phone_number', 'value' => '%111%', 'compare' => "LIKE"), // filter the users their phone_number contains '111'
+), "OR");
+
+```
