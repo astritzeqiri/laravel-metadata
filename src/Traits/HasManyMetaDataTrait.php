@@ -153,10 +153,12 @@ trait HasManyMetaDataTrait
 
     /**
      * Filter the meta query array values
-     * @param  array  $array [description]
-     * @return [type]        [description]
+     * 
+     * @param  array  $array
+     * 
+     * @return array
      */
-    public function filterMetaQueryArray($array = array()){
+    protected function filterMetaQueryArray($array = array()){
         return array_values(array_filter(array_map(function($item){
             return $this->makeMetaQueryArrayItem($item);
         }, $array)));
@@ -169,7 +171,7 @@ trait HasManyMetaDataTrait
      * 
      * @return array or false (return the array of return false) 
      */
-    public function makeMetaQueryArrayItem($item = array()){
+    protected function makeMetaQueryArrayItem($item = array()){
         if($item == null || !is_array($item) || empty($item)) return false;
         
         if(!isset($item['key']) || !isset($item['value'])) return false;
