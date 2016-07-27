@@ -81,6 +81,6 @@ $user = \App\User::first();
 // get a metadata object with a given key
 $user->get_meta("meta_key");
 
-// if the second parameter is true it returns onl the value
-$user->get_meta("meta_key" ,true);
+// if the second parameter is true it returns only the value
+$user->get_meta("meta_key", true);
 ```
