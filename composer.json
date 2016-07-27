@@ -1,0 +1,13 @@
+{
+    "name": "astrit/laravel-metadata",
+    "description": "Add metadata to laravel models",
+    "type": "laravel-plugin",
+    "authors": [
+        {
+            "name": "Astrit Zeqiri",
+            "email": "astritzeqiri5@gmail.com"
+        }
+    ],
+    "minimum-stability": "dev",
+    "require": {}
+}
