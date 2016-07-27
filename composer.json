@@ -8,15 +8,18 @@
     "authors": [
         {
             "name": "Astrit Zeqiri",
-            "email": "astritzeqiri5@gmail.com"
+            "email": "astritzeqiri5@gmail.com",
+            "homepage": "http://astritzeqiri.com",
+            "role": "Developer"
         }
     ],
     "require": {
-        "php": ">=5.4.0"
+        "php": ">=5.4.0",
+        "laravel/framework": "5.*"
     },
-    "extra": {
-        "branch-alias": {
-            "dev-master": "1.0-dev"
+    "autoload": {
+        "psr-4": {
+            "AstritZeqiri\\Metadata\\": "src/"
         }
     }
 }
