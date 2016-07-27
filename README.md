@@ -118,6 +118,6 @@ Filter users by meta_data:
 $users = \App\User::metaQuery(array(
 	array('key' => 'hair_color', 'value' => 'red'),// filter the users that have red hair color
 	array('key' => 'phone_number', 'value' => '%111%', 'compare' => "LIKE"), // filter the users their phone_number contains '111'
-), "OR");
+), "OR")->get();
 
 ```
