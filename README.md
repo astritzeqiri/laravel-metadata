@@ -5,6 +5,7 @@ Add metadata to laravel models
 ## Requirements
 
 - PHP >=5.4
+- Laravel >= 5.0
 
 
 ## Installation
