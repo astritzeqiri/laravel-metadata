@@ -1,13 +1,25 @@
 {
-    "name": "astrit/laravel-metadata",
+    "name": "astritzeqiri/laravel-metadata",
     "description": "Add metadata to laravel models",
     "type": "laravel-plugin",
+    "keywords": ["meta_data","meta","laravel"],
+    "homepage": "https://github.com/astritzeqiri/laravel-metadata",
+    "license": "MIT",
     "authors": [
         {
             "name": "Astrit Zeqiri",
-            "email": "astritzeqiri5@gmail.com"
+            "email": "astritzeqiri5@gmail.com",
+            "homepage": "http://astritzeqiri.com",
+            "role": "Developer"
         }
     ],
-    "minimum-stability": "dev",
-    "require": {}
+    "require": {
+        "php": ">=5.4.0",
+        "laravel/framework": "5.*"
+    },
+    "autoload": {
+        "psr-4": {
+            "AstritZeqiri\\Metadata\\": "src/"
+        }
+    }
 }
