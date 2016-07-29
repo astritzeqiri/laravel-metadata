@@ -22,18 +22,18 @@ trait HasManyMetaDataTrait
     /**
      * Get the meta_data relation.
      *
-     * @return \Illuminate\Database\Eloquent\Relations\HasOneOrMany
+     * @return \Illuminate\Database\Eloquent\Relations\MorphMany
      */
     public function meta_data()
     {
-        return $this->hasMany('AstritZeqiri\Metadata\Models\Metadata', 'object_id', 'id')->where('object_type', self::class);
+        return $this->morphMany(MetaData::class, 'object');
     }
     /**
      * Update the meta if it exists else create a new one
      * 
      * @param 
      * 
-     * @return Item Metadata
+     * @return Item App\MetaData
      */
     public function update_meta($key = null, $value = null)
     {
@@ -43,16 +43,14 @@ trait HasManyMetaDataTrait
         
         if($exists_meta == null){
             // create a new meta_data
-            $meta = new Metadata;
-            $meta->key = $key;
-            $meta->value = $value;
-            $meta->regarding($this);
-            $meta->save();
+            $meta = $this->meta_data()->create([
+                'key' => $key,
+                'value' => $value
+            ]);
             return $meta;
         }else{
             // update the existing meta_data
-            $exists_meta->value = $value;
-            $exists_meta->save();
+            $exists_meta->update(['value' => $value]);
             return $exists_meta;
         }
     }
@@ -67,7 +65,7 @@ trait HasManyMetaDataTrait
      */
     public function get_meta($key = null, $get_value = false)
     {
-        if($key == null || ($meta = $this->meta_data()->whereKey($key)->first()) == null)
+        if(!$key || ($meta = $this->meta_data()->whereKey($key)->first()) == null)
             return $get_value == true ? "" : null;
 
         return $get_value == true ? $meta->value : $meta;
@@ -82,9 +80,11 @@ trait HasManyMetaDataTrait
      */
     public function delete_meta($key = null)
     {
-        if($key == null) return false;
+        if(!$key) return false;
+
         $meta = $this->get_meta($key);
-        if($meta != null){
+        
+        if($meta){
             return $meta->delete();
         }
         return false;
@@ -170,7 +170,7 @@ trait HasManyMetaDataTrait
      * @return array or false (return the array of return false) 
      */
     public function makeMetaQueryArrayItem($item = array()){
-        if($item == null || !is_array($item) || empty($item)) return false;
+        if(!$item || !is_array($item)) return false;
         
         if(!isset($item['key']) || !isset($item['value'])) return false;
 
