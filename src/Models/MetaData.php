@@ -2,25 +2,25 @@
 
 namespace AstritZeqiri\Metadata\Models;
 
-use Illuminate\Database\Eloquent\Model;
 use AstritZeqiri\Metadata\Traits\HasRelatedObjectTrait;
+use Illuminate\Database\Eloquent\Model;
 
 class MetaData extends Model
 {
-  use HasRelatedObjectTrait;
+    use HasRelatedObjectTrait;
 
-  protected $guarded = array();
-  
+    protected $guarded = [];
+
   /**
-   * The attribute that shows if the table has timestamps
-   * 
-   * @var boolean
+   * The attribute that shows if the table has timestamps.
+   *
+   * @var bool
    */
   public $timestamps = false;
 
   /**
-   * The table name 
-   * 
+   * The table name.
+   *
    * @var string
    */
   protected $table = 'meta_datas';
@@ -30,10 +30,10 @@ class MetaData extends Model
    *
    * @var array
    */
-  protected $fillable = array(
+  protected $fillable = [
     'key',
     'value',
     'object_id',
     'object_type',
-  );
+  ];
 }
