@@ -125,7 +125,7 @@ trait HasManyMetaDataTrait
      */
     public function createQueryForMeta($key = null, $value = null, $compare = '=')
     {
-        return function ($query) use ($key, $value,$compare) {
+        return function ($query) use ($key, $value, $compare) {
             $query->where('key', $key)->where('value', $compare, $value);
         };
     }
@@ -161,7 +161,7 @@ trait HasManyMetaDataTrait
             $relation = 'AND';
         }
 
-        return $query->where(function ($query) use ($values,$relation) {
+        return $query->where(function ($query) use ($values, $relation) {
             foreach ($values as $value) {
                 if ($relation == 'OR') {
                     $query->orWhereHas('meta_data', $this->createQueryForMeta($value['key'], $value['value'], $value['compare']));
