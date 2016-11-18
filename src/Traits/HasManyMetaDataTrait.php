@@ -2,7 +2,7 @@
 
 namespace AstritZeqiri\Metadata\Traits;
 
-use AstritZeqiri\Metadata\Models\Metadata as Metadata;
+use AstritZeqiri\Metadata\Models\MetaData;
 
 /**
  * This is the has many media trait.
