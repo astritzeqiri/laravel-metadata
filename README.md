@@ -59,7 +59,7 @@ $ php artisan migrate
 
 # Usage
 
-### Basic Example
+## Basic Examples
 
 First you need to go to your model and use the HasManyMetaDataTrait:
 
