@@ -34,53 +34,72 @@ trait HasManyMetaDataTrait
     /**
      * Update the meta if it exists else create a new one
      * 
-     * @param 
+     * @param string $key
+     * @param string $value
      * 
-     * @return Item App\MetaData
+     * @return AstritZeqiri\Metadata\Models\MetaData|null
      */
     public function update_meta($key = null, $value = null)
     {
-        if ($key == null || $value == null) {
-            return false;
+        if (is_array($key)) {
+            return $this->update_meta_array($key);
         }
 
-        $exists_meta = $this->get_meta($key);
-        
-        if ($exists_meta == null) {
-            // create a new meta_data
-            $meta = $this->meta_data()->create([
-                'key' => $key,
-                'value' => $value
-            ]);
-            return $meta;
-        } else {
-            // update the existing meta_data
-            $exists_meta->update(['value' => $value]);
-            return $exists_meta;
+        if (! $key || !$value) {
+            return null;
         }
+
+        $meta = $this->get_meta($key);
+        
+        if (! $meta) {
+            return $this->meta_data()->create(compact(
+                'key', 'value'
+            ));
+        }
+
+        $meta->update(['value' => $value]);
+        
+        return $meta;
     }
 
     /**
-     * Get a meta data
+     * Update meta data from a given array.
+     * 
+     * @param  array  $metas
+     * 
+     * @return Collection of MetaData objects.
+     */
+    public function update_meta_array(array $metas = [])
+    {
+        return collect($metas)
+        ->map(function($value, $key) {
+            return $this->update_meta($key, $value);
+        })
+        ->filter()
+        ->values();
+    }
+
+    /**
+     * Get a meta data.
      * 
      * @param string $key the meta key 
-     * @param boolean $get_value (if true return only the data else return the object)
+     * @param boolean $onlyValue (if true return only the value else return the object)
      * 
-     * @return \App\Media or string  (if $get_value is true return only the data else return the object)
+     * @return AstritZeqiri\Metadata\Models\MetaData|string
      */
-    public function get_meta($key = null, $get_value = false)
+    public function get_meta($key = null, $onlyValue = false)
     {
         if (! $key) {
             return null;
         }
 
-        $meta = $this->meta_data()->whereKey($key)->first();
+        $meta = $this->meta_data()->where('key', $key)->first();
 
         if (! $meta) {
             return null;
         }
 
-        return $get_value == true ? $meta->value : $meta;
+        return $onlyValue == true ? $meta->value : $meta;
     }
     
     /**
@@ -112,36 +131,52 @@ trait HasManyMetaDataTrait
      */
     public function delete_all_metas()
     {
-        $this->meta_data->each(function ($model) { $model->delete(); });
+        return $this->meta_data()->delete();
     }
 
     /**
-     *  Filter items by a given array of meta_datas
+     *  Filter items by a given array of meta_datas.
      * 
-     * @param $query
+     * @param Illuminate\Database\Eloquent\Builder $query
      * @param array $values [array of metadatas (Item example ["item" => "", "value" => "", "compare" => ""])]
      * @param string $relation [how you want to search with AND or OR]
      * 
-     * @return $query
+     * @return Illuminate\Database\Eloquent\Builder $query
      */
-    public function scopeMetaQuery($query, $values = array(), $relation = "AND")
+    public function scopeMetaQuery($query, $values, $value = '', $relation = "AND")
     {
+        // Check if the values argument is a string and the make a new meta query 
+        // where values is the key, value is the value and relation is the comparator.
+        if (is_string($values)) {
+            list($key, $value, $compare) = [$values, $value, $relation];
+            
+            return $query->metaQuery([compact('key', 'value', 'compare')]);
+        }
+
+        // If the values is not an array something is wrong with the query
+        // arguments and we just return the query as it was given.
         if (! is_array($values)) {
             return $query;
         }
 
+        // If the {$values} is an array the the relation is the second argument {$value} argument.
+        $relation = $value;
+
+        // Filter the given meta query array
         $values = $this->filterMetaQueryArray($values);
-        
+
+        // If the filtered array contains no elements
+        // then return the given query
         if (empty($values)) {
             return $query;
         }
 
-        $relation = $this->resolveRelation($relation);
-        
-        if (count($values) == 1) {
-            $relation = "AND";
-        }
+        // Resolve the query relation 'OR' or 'AND'.
+        // if there is only one item in the values the relation is 'OR'
+        // else we call the resolveRelation method
+        $relation = count($values) == 1 ? "AND" : $this->resolveRelation($relation);
 
+        // Make the meta query
         return $query->where(function ($query) use ($values, $relation) {
             $method = $this->getMethodFromRelation($relation);
 
@@ -161,12 +196,12 @@ trait HasManyMetaDataTrait
     /**
      * Return only one meta query filter.
      * 
-     * @param $query
-     * @param string $key the meta key
-     * @param string $value the meta value
-     * @param string $compare the meta compare
+     * @param  Illuminate\Database\Eloquent\Builder $query
+     * @param  string $key the meta key
+     * @param  string $value the meta value
+     * @param  string $compare the meta compare
      * 
-     * @return $query
+     * @return Illuminate\Database\Eloquent\Builder $query
      */
     private function createQueryForMeta($key, $value, $compare = "=")
     {
@@ -222,7 +257,7 @@ trait HasManyMetaDataTrait
      * 
      * @param  string $relation
      * 
-     * @return string
+     * @return string 
      */
     private function getMethodFromRelation($relation = 'AND')
     {
@@ -230,7 +265,7 @@ trait HasManyMetaDataTrait
             return 'orWhereHas';
         }
 
-        $method = 'whereHas';
+        return 'whereHas';
     }
 
     /**
