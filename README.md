@@ -45,8 +45,19 @@ If you want you can add an alias to the MetaData model within the `aliases` arra
 )
 ```
 
+Then you need to publish the migration files:
 
-## Usage
+```
+$ php artisan vendor:publish --provider="AstritZeqiri\Metadata\LaravelMetaDataServiceProvider"
+```
+
+And then run the migration:
+
+```
+$ php artisan migrate
+```
+
+# Usage
 
 ### Basic Example
 
@@ -86,7 +97,7 @@ $user->get_meta("meta_key");
 $user->get_meta("meta_key", true);
 ```
 
-## Delete meta data entry:
+### Delete meta data entry:
 
 ```php
 
@@ -108,7 +119,7 @@ $user->delete_all_metas();
 
 
 // Search by only one meta data.
-$users = \App\User::metaQuery('hair_color', 'red'))->get();
+$users = \App\User::metaQuery('hair_color', 'red')->get();
 // filter the users that have red hair color
 
 // Search by many meta data.
