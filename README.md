@@ -61,7 +61,7 @@ use AstritZeqiri\Metadata\Traits\HasManyMetaDataTrait;
 use HasManyMetaDataTrait;
 ```
 
-Updating a meta data entry:
+### Updating a meta data entry:
 
 ```php
 // get the instance
@@ -72,7 +72,7 @@ $user->update_meta("meta_key", "meta_value");
 
 ```
 
-Get meta data entry:
+### Get meta data entry:
 
 ```php
 
@@ -86,7 +86,7 @@ $user->get_meta("meta_key");
 $user->get_meta("meta_key", true);
 ```
 
-Delete meta data entry:
+## Delete meta data entry:
 
 ```php
 
@@ -102,23 +102,21 @@ $user->delete_all_metas();
 ```
 
 
-Filter users by meta_data:
+### Filter users by meta_data:
 
 ```php
 
-/* the query
- * 
- * the filter function is metaQuery($metas = array(), $relation = "AND")
- *
- * @param array $values [array of metadatas (Item example ["item" => "", "value" => "", "compare" => ""])]
- * @param string $relation [how you want to search with AND or OR]
- *
- */
 
-// Example 
+// Search by only one meta data.
+$users = \App\User::metaQuery('hair_color', 'red'))->get();
+// filter the users that have red hair color
+
+// Search by many meta data.
 $users = \App\User::metaQuery(array(
-	array('key' => 'hair_color', 'value' => 'red'),// filter the users that have red hair color
-	array('key' => 'phone_number', 'value' => '%111%', 'compare' => "LIKE"), // filter the users their phone_number contains '111'
+	array('key' => 'hair_color', 'value' => 'red'),
+	array('key' => 'phone_number', 'value' => '%111%', 'compare' => "LIKE")
 ), "OR")->get();
+// filter the users that have red hair color
+// or that their phone_number contains '111'
 
 ```
