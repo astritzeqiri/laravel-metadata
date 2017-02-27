@@ -3,6 +3,7 @@
 namespace AstritZeqiri\Metadata\Traits;
 
 use AstritZeqiri\Metadata\Models\MetaData;
+use AstritZeqiri\Metadata\Observers\ModelObserver;
 
 /**
  * This is the has many media trait.
@@ -11,17 +12,13 @@ use AstritZeqiri\Metadata\Models\MetaData;
 trait HasManyMetaDataTrait
 {
     /**
-     * This method runs when the trait has booted
-     * 
+     * This method runs when the trait has booted.
      */
     public static function bootHasManyMetaDataTrait()
     {
-        $name = static::class;
-        // Add a listener on deleting a object and delete all of its metas
-        \Event::listen("eloquent.deleting: {$name}", function ($model) {
-            $model->delete_all_metas();
-        });
+        static::observe(ModelObserver::class);
     }
+
     /**
      * Get the meta_data relation.
      *
