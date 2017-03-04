@@ -86,7 +86,7 @@ trait HasManyMetaDataTrait
      */
     public function get_meta($key = null, $onlyValue = false)
     {
-        if (! $key) {
+        if (! is_string($key)) {
             return null;
         }
 
