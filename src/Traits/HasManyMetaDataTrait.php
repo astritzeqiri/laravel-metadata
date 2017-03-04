@@ -193,7 +193,6 @@ trait HasManyMetaDataTrait
     /**
      * Return only one meta query filter.
      * 
-     * @param  Illuminate\Database\Eloquent\Builder $query
      * @param  string $key the meta key
      * @param  string $value the meta value
      * @param  string $compare the meta compare
