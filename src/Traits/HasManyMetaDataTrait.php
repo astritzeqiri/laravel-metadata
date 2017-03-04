@@ -108,7 +108,7 @@ trait HasManyMetaDataTrait
      */
     public function delete_meta($key = null)
     {
-        if (! $key) {
+        if (! is_string($key)) {
             return false;
         }
 
