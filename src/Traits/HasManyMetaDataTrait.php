@@ -42,13 +42,13 @@ trait HasManyMetaDataTrait
             return $this->update_meta_array($key);
         }
 
-        if (! is_string($key)) {
+        if (!is_string($key)) {
             return null;
         }
 
         $meta = $this->get_meta($key);
         
-        if (! $meta) {
+        if (!$meta) {
             return $this->meta_data()->create(compact(
                 'key', 'value'
             ));
@@ -86,13 +86,13 @@ trait HasManyMetaDataTrait
      */
     public function get_meta($key = null, $onlyValue = false)
     {
-        if (! is_string($key)) {
+        if (!is_string($key)) {
             return null;
         }
 
         $meta = $this->meta_data()->where('key', $key)->first();
 
-        if (! $meta) {
+        if (!$meta) {
             return null;
         }
 
@@ -152,7 +152,7 @@ trait HasManyMetaDataTrait
 
         // If the values is not an array something is wrong with the query
         // arguments and we just return the query as it was given.
-        if (! is_array($values)) {
+        if (!is_array($values)) {
             return $query;
         }
 
@@ -174,7 +174,7 @@ trait HasManyMetaDataTrait
         $relation = count($values) == 1 ? "AND" : $this->resolveRelation($relation);
 
         // Make the meta query
-        return $query->where(function ($query) use ($values, $relation) {
+        return $query->where(function($query) use ($values, $relation) {
             $method = $this->getMethodFromRelation($relation);
 
             foreach ($values as $value) {
@@ -201,7 +201,7 @@ trait HasManyMetaDataTrait
      */
     private function createQueryForMeta($key, $value, $compare = "=")
     {
-        return function ($query) use ($key, $value, $compare) {
+        return function($query) use ($key, $value, $compare) {
             $query->where('key', $key)->where('value', $compare, $value);
         };
     }
@@ -216,7 +216,7 @@ trait HasManyMetaDataTrait
     private function filterMetaQueryArray($items = [])
     {
         return collect($items)
-        ->map(function ($item) {
+        ->map(function($item) {
             return $this->makeMetaQueryArrayItem($item);
         })
         ->filter()
@@ -233,15 +233,15 @@ trait HasManyMetaDataTrait
      */
     private function makeMetaQueryArrayItem($item = [])
     {
-        if (! is_array($item)) {
+        if (!is_array($item)) {
             return null;
         }
         
-        if (! array_key_exists("key", $item) || ! array_key_exists("value", $item)) {
+        if (!array_key_exists("key", $item) || !array_key_exists("value", $item)) {
             return null;
         }
 
-        if (! array_key_exists("compare", $item)) {
+        if (!array_key_exists("compare", $item)) {
             $item['compare'] = "=";
         }
 
@@ -275,7 +275,7 @@ trait HasManyMetaDataTrait
     {
         $relations = array("OR", "AND");
         
-        if (! in_array($relation, $relations)) {
+        if (!in_array($relation, $relations)) {
             $relation = "AND";
         }
 
