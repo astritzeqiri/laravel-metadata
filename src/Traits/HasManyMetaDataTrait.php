@@ -32,7 +32,7 @@ trait HasManyMetaDataTrait
      * Update the meta if it exists else create a new one
      * 
      * @param string $key
-     * @param string $value
+     * @param string|null|boolean $value
      * 
      * @return AstritZeqiri\Metadata\Models\MetaData|null
      */
@@ -42,7 +42,7 @@ trait HasManyMetaDataTrait
             return $this->update_meta_array($key);
         }
 
-        if (! $key || !$value) {
+        if (! is_string($key)) {
             return null;
         }
 
