@@ -131,3 +131,6 @@ $users = \App\User::metaQuery(array(
 // or that their phone_number contains '111'
 
 ```
+
+## License
+[MIT](http://opensource.org/licenses/MIT)
